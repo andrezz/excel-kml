@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel - KML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+    <script src="UTMLatLngFront.js"></script>
+    <script src="index.js"></script>
+    <style>
+        select:not([multiple]),
+        [data-select-tick] {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 bg-slate-100">
+    <div class="container mx-auto my-6 p-4">
+        <h1 class="font-bold text-xl mb-6 text-center">Convertir Excel a KML</h1>
+        <div class="bg-green-500 text-slate-100 p-4 rounded-lg mb-6">
+            <div class="border border-dashed border-2 border-slate-200 rounded-lg p-4 h-48 relative">
+                <input type="file" name="file" id="file"
+                    accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    class="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer">
+                <p class="top-1/2 left-1/2 absolute -translate-x-1/2 -translate-y-1/2 text-center">
+                    Selecciona o arrastra tu archivo Excel
+                </p>
+            </div>
+        </div>
+
+        <div class="data-settings hidden">
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h2 class="font-bold mb-2">Coordenadas</h2>
+                <div class="grid md:grid-cols-3 mb-3">
+                    <select name="coordinateType" id="coordinateType"
+                        class="border border-slate-200 rounded-lg px-3 py-2">
+                        <option value="UTM">UTM</option>
+                        <option value="LATLNG">Latitud/Longitud</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 data-utm">
+                    <div>
+                        <label for="east" class="font-semibold mb-2">Este</label>
+                        <select name="east" id="east"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="north" class="font-semibold mb-2">Norte</label>
+                        <select name="north" id="north"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="hutm" class="font-semibold mb-2">Huso(Numero)</label>
+                        <select name="hutm" id="hutm"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="lutm" class="font-semibold mb-2">Zona(Letra)</label>
+                        <select name="lutm" id="lutm"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 data-latlng hidden">
+                    <div>
+                        <label for="lat" class="font-semibold mb-2">Latitud</label>
+                        <select name="lat" id="lat"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="lng" class="font-semibold mb-2">Longitud</label>
+                        <select name="lng" id="lng"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h2 class="font-bold mb-2">Datos</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-3">
+                    <div>
+                        <label for="name" class="font-semibold mb-2">Nombre del Punto</label>
+                        <select name="name" id="name"
+                            class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="desc" class="font-semibold mb-2">Descripción</label>
+                    <select name="desc" id="desc" multiple size="10"
+                        class="border border-slate-200 rounded-lg px-3 py-2 w-full block data-cols">
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="color" class="font-semibold mb-2">Color</label>
+                        <input type="color" name="color" id="color" class="w-full rounded-lg">
+                    </div>
+                </div>
+            </div>
+
+            <button class="block w-full bg-indigo-500 text-slate-100 px-6 py-6 rounded-lg" id="btn-convert">
+                Convertir
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>
