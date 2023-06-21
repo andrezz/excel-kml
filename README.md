@@ -11,6 +11,9 @@ start index.html
 Se abrirá una ventana en el navegador, donde se debe seleccionar el archivo Excel y luego seleccionar los
 datos solicitados en el formulario. Finalmente hacer clic en el botón **Convertir**
 
+## Vista Previa
+Ingresar a [https://andrezz.github.io/excel-kml/](https://andrezz.github.io/excel-kml/)
+
 ## Librerias Utilizadas
 - [Sheet JS](https://docs.sheetjs.com/)
 - [utm-latlng](https://github.com/shahid28/utm-latlng)
